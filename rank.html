@@ -41,168 +41,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="flot/jquery.flot.js"></script>
-    <script>
-
-        function chart()
-        {
-            /* ---------- Chart with points ---------- */
-            if($("#stats-chart2").length)
-            {
-                var pageviews = [[1, 5+randNum()], [1.5, 10+randNum()], [2, 15+randNum()], [2.5, 20+randNum()],[3, 25+randNum()],[3.5, 30+randNum()],[4, 35+randNum()],[4.5, 40+randNum()],[5, 45+randNum()],[5.5, 50+randNum()],[6, 55+randNum()],[6.5, 60+randNum()],[7, 65+randNum()],[7.5, 70+randNum()],[8, 75+randNum()],[8.5, 80+randNum()],[9, 85+randNum()],[9.5, 90+randNum()],[10, 85+randNum()],[10.5, 80+randNum()],[11, 75+randNum()],[11.5, 80+randNum()],[12, 75+randNum()],[12.5, 70+randNum()],[13, 65+randNum()],[13.5, 75+randNum()],[14,80+randNum()],[14.5, 85+randNum()],[15, 90+randNum()], [15.5, 95+randNum()], [16, 5+randNum()], [16.5, 15+randNum()], [17, 15+randNum()], [17.5, 10+randNum()], [18, 15+randNum()], [18.5, 20+randNum()],[19, 25+randNum()],[19.5, 30+randNum()],[20, 35+randNum()],[20.5, 40+randNum()],[21, 45+randNum()],[21.5, 50+randNum()],[22, 55+randNum()],[22.5, 60+randNum()],[23, 65+randNum()],[23.5, 70+randNum()],[24, 75+randNum()]];
-                var visits = [[1, randNum2()-10], [2, randNum2()-10], [3, randNum2()-10], [4, randNum2()],[5, randNum2()],[6, 4+randNum2()],[7, 5+randNum2()],[8, 6+randNum2()],[9, 6+randNum2()],[10, 8+randNum2()],[11, 9+randNum2()],[12, 10+randNum2()],[13,11+randNum2()],[14, 12+randNum2()],[15, 13+randNum2()],[16, 14+randNum2()],[17, 15+randNum2()],[18, 15+randNum2()],[19, 16+randNum2()],[20, 17+randNum2()],[21, 18+randNum2()],[22, 19+randNum2()]];
-                var visitors = [[1, 5+randNum3()], [2, 10+randNum3()], [3, 15+randNum3()], [4, 20+randNum3()],[5, 25+randNum3()],[6, 30+randNum3()],[7, 35+randNum3()],[8, 40+randNum3()],[9, 45+randNum3()],[10, 50+randNum3()],[11, 55+randNum3()],[12, 60+randNum3()],[13, 65+randNum3()],[14, 70+randNum3()],[15, 75+randNum3()],[16, 80+randNum3()],[17, 85+randNum3()],[18, 90+randNum3()],[19, 85+randNum3()],[20, 80+randNum3()],[21, 75+randNum3()],[22, 80+randNum3()]];
-                var newVisitors = [[1, randNum4()-10], [2, randNum4()-10], [3, randNum4()-10], [4, randNum4()],[5, randNum4()],[6, 4+randNum4()],[7, 5+randNum4()],[8, 6+randNum4()],[9, 6+randNum4()],[10, 8+randNum4()],[11, 9+randNum4()],[12, 10+randNum4()],[13,11+randNum4()],[14, 12+randNum4()],[15, 13+randNum4()],[16, 14+randNum4()],[17, 15+randNum4()],[18, 15+randNum4()],[19, 16+randNum4()],[20, 17+randNum4()],[21, 18+randNum4()],[22, 19+randNum4()]];
-                console.log(pageviews);
-                console.log(visits);
-                console.log(visitors);
-                console.log(newVisitors);
-                var plot = $.plot($("#stats-chart2"),
-                        [ { data: visitors,
-                            label: "KW",
-                            lines: { show: true,
-                                fill: false,
-                                lineWidth: 2
-                            },
-                            shadowSize: 0
-                        }, {
-                            data: pageviews,
-                            bars: { show: true,
-                                fill: false,
-                                barWidth: 0.1,
-                                align: "center",
-                                lineWidth: 5,
-                            }
-                        }
-                        ], {
-                            grid: { hoverable: true,
-                                clickable: true,
-                                tickColor: "rgba(255,255,255,0.05)",
-                                borderWidth: 0
-                            },
-                            legend: {
-                                show: false
-                            },
-                            colors: ["rgba(255,255,255,0.8)", "rgba(255,255,255,0.6)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.2)"],
-                            xaxis: {ticks:15, tickDecimals: 0, color: "rgba(255,255,255,0.8)" },
-                            yaxis: {ticks:5, tickDecimals: 0, color: "rgba(255,255,255,0.8)" },
-                        });
-
-                function showTooltip(x, y, contents) {
-                    $('<div id="tooltip">' + contents + '</div>').css( {
-                        position: 'absolute',
-                        display: 'none',
-                        top: y + 5,
-                        left: x + 5,
-                        border: '1px solid #fdd',
-                        padding: '2px',
-                        'background-color': '#dfeffc',
-                        opacity: 0.80
-                    }).appendTo("body").fadeIn(200);
-                }
-                var previousPoint = null;
-                $("#stats-chart2").bind("plothover", function (event, pos, item) {
-                    $("#x").text(pos.x.toFixed(2));
-                    $("#y").text(pos.y.toFixed(2));
-                    if (item) {
-                        if (previousPoint != item.dataIndex) {
-                            previousPoint = item.dataIndex;
-                            $("#tooltip").remove();
-                            var x = item.datapoint[0].toFixed(2),
-                                    y = item.datapoint[1].toFixed(2);
-                            showTooltip(item.pageX, item.pageY,
-                                    item.series.label + " of " + x + " = " + y);
-                        }
-                    }
-                    else {
-                        $("#tooltip").remove();
-                        previousPoint = null;
-                    }
-                });
-            }
-            function randNumFB(){
-                return ((Math.floor( Math.random()* (1+40-20) ) ) + 20);
-            }
-            /* ---------- Chart with points ---------- */
-            $('.flot-y1-axis').css('color','#ccc');
-            $('.flot-x1-axis').css('color','#ccc');
-        }
-
-        function randNum(){
-            return ((Math.floor( Math.random()* (1+40-20) ) ) + 20)*3;
-        }
-        function randNum2(){
-            return ((Math.floor( Math.random()* (1+40-20) ) ) + 20) ;
-        }
-        function randNum3(){
-            return ((Math.floor( Math.random()* (1+40-20) ) ) + 20) ;
-        }
-        function randNum4(){
-            return ((Math.floor( Math.random()* (1+40-20) ) ) + 20) * 100;
-        }
-
-
-                    $(function() {
-                        // We use an inline data source in the example, usually data would
-                        // be fetched from a server
-                        var data = [],
-                                totalPoints = 300;
-                        function getRandomData() {
-                            if (data.length > 0)
-                                data = data.slice(1);
-                            // Do a random walk
-                            while (data.length < totalPoints) {
-                                var prev = data.length > 0 ? data[data.length - 1] : 50,
-                                        y = prev + Math.random() * 10 - 5;
-                                if (y < 0) {
-                                    y = 0;
-                                } else if (y > 100) {
-                                    y = 100;
-                                }
-                                data.push(y);
-                            }
-                            // Zip the generated y values with the x values
-                            var res = [];
-                            for (var i = 0; i < data.length; ++i) {
-                                res.push([i, data[i]])
-                            }
-                            return res;
-                        }
-                        // Set up the control widget
-                        var updateInterval = 30;
-                        $("#updateInterval").val(updateInterval).change(function () {
-                            var v = $(this).val();
-                            if (v && !isNaN(+v)) {
-                                updateInterval = +v;
-                                if (updateInterval < 1) {
-                                    updateInterval = 1;
-                                } else if (updateInterval > 2000) {
-                                    updateInterval = 2000;
-                                }
-                                $(this).val("" + updateInterval);
-                            }
-                        });
-                        var options = {
-                            series: { shadowSize: 1 },
-                            lines: { show: true, lineWidth: 2, fill: true, fillColor: { colors: [ { opacity: 0.9 }, { opacity: 0.9 } ] }},
-                            yaxis: { min: 0, max: 100, tickFormatter: function (v) { return v + "kW"; }, color: "rgba(255,255,255,0.8)"},
-                            xaxis: { show: false, color: "rgba(255,255,255,0.8)" },
-                            colors: ["rgba(255,255,255,0.95)"],
-                            grid: {	tickColor: "rgba(255,255,255,0.15)",
-                                borderWidth: 0
-                            }
-                        };
-                        var plot = $.plot("#placeholder", [ getRandomData() ],options);
-                        function update() {
-                            plot.setData([getRandomData()]);
-                            // Since the axes don't change, we don't need to call plot.setupGrid()
-                            plot.draw();
-                            setTimeout(update, updateInterval);
-                        }
-                        update();
-                        // Add the Flot version string to the footer
-                        chart();
-                    });
-    </script>
+    
 </head>
 
 <body>
@@ -212,28 +51,53 @@
     <div class="row">
 
         <div class="section-title text-center">
-            <h3>Daily Reports</h3>
-            <p>Your daily reports of appliances usage time</p>
+            <h3>Ranks</h3>
+            <p>Your rank among your community.</p>
 
         </div>
     </div>
-    <div class="row">
-        <h2>Last 24 Hours Usage</h2>
-        <div class="col-md-12 content">
-            <div id="stats-chart2"  style="height:282px" ></div>
-        </div>
 
-    </div><!-- /.row -->
-
+     <!-- <div class="row">
+	<div class="section-title text-center">
+	    <h3>Current Rank</h3>
+	    <p>12th</p>
+	</div>
+    </div>
     <div class="row">
-        <h2>Live Usage</h2>
-        <div class="col-md-12 content">
-            <div id="placeholder" class="placeholder" style="height: 200px;"></div>
-        </div>
-        <div class="col-md-12">
-        <a href="index.html" class='btn btn-default btn-block'>Back</a>
-            </div>
-    </div><!-- /.row -->
+	<div class="section-title text-center">
+	    <h3>Last Month's Rank</h3>
+	    <p>15th</p>
+	</div>
+    </div>
+	<div class="row">
+	<div class="section-title text-center">
+	    <h3>Last Year's Rank</h3>
+	    <p>22nd</p>
+	</div>
+    </div> -->
+    
+	<div class="menu-item green" align="center">
+		<h3>Current Rank</h3>
+		<p>12th</p>
+	    
+	</div>
+
+	<div class="menu-item blue" align="center">
+	    
+
+		<h3>Last Month's Rank</h3>
+		<p>15th</p>
+	    
+	</div>
+
+	<div class="menu-item light-red" align="center">
+	    
+
+		<h3>Last Year's Rank</h3>
+		<p>22nd</p>
+	    
+	</div>
+
 </div>
 </body>
 </html>
