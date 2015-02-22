@@ -730,6 +730,13 @@ and (max-width : 991px) {
     -webkit-animation-duration: 300ms;
 }
 
+.team-member .team-details.active{
+    opacity: 0.7;
+    -webkit-animation: pulse;
+    animation: pulse;
+    /*animation-duration: 300ms;*/
+    -webkit-animation-duration: 300ms;
+}
 
 
 /**** Start Latest News Section ****/
